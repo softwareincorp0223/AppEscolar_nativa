@@ -1,4 +1,4 @@
-package com.app_escolar_2025v1
+package com.prueba_react
 
 import android.app.Application
 import com.facebook.react.PackageList
