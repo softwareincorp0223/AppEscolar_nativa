@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { 
+import {
   View,
   Text,
   StyleSheet,
   Dimensions,
   Alert,
   TouchableOpacity,
-  Platform
+  Platform,
+  PermissionsAndroid
 } from 'react-native';
 import { Camera } from 'react-native-camera-kit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -17,10 +18,24 @@ const App = () => {
   const [initializing, setInitializing] = useState(true);
   const navigation = useNavigation();
 
+  useEffect(() => {
+    const requestPermissions = async () => {
+      if (Platform.OS === 'android') {
+        await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA);
+      }
+      verificarSesion();
+    };
+
+    requestPermissions();
+  }, []);
+
   // Verificar sesión guardada
   const verificarSesion = async () => {
     const idPadre = await AsyncStorage.getItem('@idPadre');
     const token_sesion = await AsyncStorage.getItem('@token_sesion');
+
+    //await AsyncStorage.setItem('@idPadre', '1ek6wunuzo');
+    //await AsyncStorage.setItem('@token_sesion', 'awlt2q639zzojdubjff9qinv2uucvxtqvdzxg1rasq1aguzdjx');
 
     if (!idPadre || !token_sesion) {
       setInitializing(false);
@@ -85,7 +100,7 @@ const App = () => {
   if (initializing) {
     return (
       <View style={styles.centeredContainer}>
-        <Text style={styles.largeText}>Cargando...</Text>
+        <Text style={styles.largeText}></Text>
       </View>
     );
   }

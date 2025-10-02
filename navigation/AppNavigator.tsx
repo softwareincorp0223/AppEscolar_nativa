@@ -2,18 +2,18 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 // Importa tus componentes de pantalla
-//import Configuracion from '../src/screens/configuracion';
-//import Calendario from '../src/screens/calendario';
-//import Calificaciones from '../src/screens/calificaciones';
-//import Mensajes from '../src/screens/mensajes';
-//import Seguimientos from '../src/screens/seguimientos';
-//import Tareas from '../src/screens/tareas';
-//import LoginScreen from '../src/screens/login_scanner_escuelas';
-//import Login from '../src/screens/login';
-//import ScanerEscuelas from '../src/screens/scannerEscuelas';
-//import DetallesAlumno from '../src/screens/detallesAlumno';
+import DetallesAlumno from '../src/screens/DetallesAlumno';
 import LoginNativa from '../src/screens/Login_nativa';
-//import Asistencias from '../src/screens/asistencias';
+import Mensajes from '../src/screens/Mensajes';
+import Tareas from '../src/screens/Tareas';
+import Seguimientos from '../src/screens/Seguimientos';
+import Calificaciones from '../src/screens/Calificaciones';
+import Calendario from '../src/screens/Calendario';
+import Asistencias from '../src/screens/Asistencias';
+import Configuracion from '../src/screens/Configuracion';
+import LoginScreen from '../src/screens/LoginScannerEscuelas';
+import ScanerEscuelas from '../src/screens/ScannerEscuelas';
+import ScreenLoad from "../src/screens/ScreenLoad";
 
 export type RootStackParamList = {
     Login: undefined;
@@ -28,6 +28,7 @@ export type RootStackParamList = {
     Tareas: undefined;
     login_qr_escuelas: undefined;
     scannerEscuelas: undefined;
+    ScreenLoad: undefined;
 };
 
 // Crea un navegador Stack tipado
@@ -45,19 +46,18 @@ export const MainNavigator = () => {
                 },
             }}
         >
+            <Stack.Screen name="ScreenLoad" component={ScreenLoad} />
             <Stack.Screen name="LoginNativa" component={LoginNativa} />
-            {/*
             <Stack.Screen name="DetallesAlumno" component={DetallesAlumno} />
+            <Stack.Screen name="Mensajes" component={Mensajes} />
+            <Stack.Screen name="Tareas" component={Tareas} />
+            <Stack.Screen name="Seguimientos" component={Seguimientos} />
+            <Stack.Screen name="Calificaciones" component={Calificaciones} />
             <Stack.Screen name="Calendario" component={Calendario} />
             <Stack.Screen name="Asistencias" component={Asistencias} />
             <Stack.Screen name="Configuracion" component={Configuracion} />
-            <Stack.Screen name="Calificaciones" component={Calificaciones} />
-            <Stack.Screen name="Mensajes" component={Mensajes} />
-            <Stack.Screen name="Seguimientos" component={Seguimientos} />
-            <Stack.Screen name="Tareas" component={Tareas} />
             <Stack.Screen name="login_qr_escuelas" component={LoginScreen} />
             <Stack.Screen name="scannerEscuelas" component={ScanerEscuelas} />
-            */}
         </Stack.Navigator>
     );
 };
