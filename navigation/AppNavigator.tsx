@@ -16,7 +16,6 @@ import ScanerEscuelas from '../src/screens/ScannerEscuelas';
 import ScreenLoad from "../src/screens/ScreenLoad";
 
 export type RootStackParamList = {
-    Login: undefined;
     LoginNativa: undefined;
     DetallesAlumno: undefined;
     Calendario: undefined;

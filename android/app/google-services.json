@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "450765036809",
+    "project_id": "app-escolar-fa0f4",
+    "storage_bucket": "app-escolar-fa0f4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:450765036809:android:d2990452495f61ac70c7d8",
+        "android_client_info": {
+          "package_name": "com.aplicacion_escolar"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdXLx22buF2pAT9dIeyw1ImAhf9crDTXc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:450765036809:android:c14a722b93155b4a70c7d8",
+        "android_client_info": {
+          "package_name": "com.prueba_react"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdXLx22buF2pAT9dIeyw1ImAhf9crDTXc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

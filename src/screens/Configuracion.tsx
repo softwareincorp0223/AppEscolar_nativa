@@ -1,17 +1,18 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image, ImageBackground, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, ImageBackground, Alert, Button } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage'; // Importar AsyncStorage
 import { notificaciones_dentro_app } from '../actions/Actions';
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faUser, faArrowLeft  } from '@fortawesome/free-solid-svg-icons'; // Importa los iconos necesarios
+import { faUser, faArrowLeft } from '@fortawesome/free-solid-svg-icons'; // Importa los iconos necesarios
 
 import { style } from '../theme/AppTheme';
 import Menu from '../components/Navegacion';
+import Notifee from '@notifee/react-native';
 
-interface Props extends StackScreenProps<any, any>{};
+interface Props extends StackScreenProps<any, any> { };
 
 export const Configuracion = ({ navigation, route }: Props) => {
     const currentScreen = route.name === 'Configuracion';
@@ -21,7 +22,7 @@ export const Configuracion = ({ navigation, route }: Props) => {
     const [institutoCorreo, setInstitutoCorreo] = useState('');
     const [institutoLogo, setInstitutoLogo] = useState('');
     const [institutoDescripcion, setInstitutoDescripcion] = useState('');
-    
+
     const [padreNombre, setPadreNombre] = useState('');
     const [padreApellido, setPadreApellido] = useState('');
     const [padreCorreo, setPadreCorreo] = useState('');
@@ -35,6 +36,14 @@ export const Configuracion = ({ navigation, route }: Props) => {
         Asistencias: false,
         Configuracion: false,
     });
+
+    const showLocalNotification = async (title = 'Hola', body = 'Esto es una prueba') => {
+        await Notifee.displayNotification({
+            title,
+            body,
+            android: { channelId: 'default' },
+        });
+    };
 
     const handleNotificacionesNav = async () => {
         try {
@@ -72,18 +81,18 @@ export const Configuracion = ({ navigation, route }: Props) => {
         handleNotificacionesNav();
     }, []);
 
-    const image = {uri: 'http://aplicacionescolar.com/webview/public/assets/img/fondo-config.png'};
+    const image = { uri: 'http://aplicacionescolar.com/webview/public/assets/img/fondo-config.png' };
     const imageLogo = 'http://aplicacionescolar.com/webview/public/assets/img/fondo-config.png';
 
     const handleLogout = async () => {
         try {
-      
+
             // Reasignar valores vacíos a las variables en AsyncStorage
             await AsyncStorage.setItem('@idPadre', '');
             await AsyncStorage.setItem('@token_sesion', '');
-            
+
             navigation.navigate('LoginNativa');
-      
+
             console.log('Sesión cerrada correctamente.');
             Alert.alert('Sesión cerrada correctamente.');
         } catch (error) {
@@ -101,27 +110,27 @@ export const Configuracion = ({ navigation, route }: Props) => {
         <SafeAreaView style={{ flex: 1 }}>
             <ImageBackground source={image} resizeMode="cover" style={style.headerConfiguracion}>
                 {/* Botón de regreso */}
-            <TouchableOpacity onPress={handleBack} style={{ position: 'absolute', left: 15, top: 28 }}>
-                <FontAwesomeIcon icon={faArrowLeft} size={20} color="white" />
-            </TouchableOpacity>
+                <TouchableOpacity onPress={handleBack} style={{ position: 'absolute', left: 15, top: 28 }}>
+                    <FontAwesomeIcon icon={faArrowLeft} size={20} color="white" />
+                </TouchableOpacity>
                 <Text style={style.titleConfiguracion}>Configuración</Text>
             </ImageBackground>
             <View style={[style.containerDatosConfiguracion, style.datosPadre]}>
-                <Image source={{uri: institutoLogo !== '' ? 'http://aplicacionescolar.com/sistema/archivos/' + institutoLogo : imageLogo }} style={style.logoEscuela} />
+                <Image source={{ uri: institutoLogo !== '' ? 'http://aplicacionescolar.com/sistema/archivos/' + institutoLogo : imageLogo }} style={style.logoEscuela} />
                 <Text style={[style.textoPadre, style.textoGris]}>{padreNombre + ' ' + padreApellido}</Text>
                 <Text style={[style.textoPadre, style.textoGris]}>{padreCorreo} </Text>
             </View>
-            <View style={[style.containerDatosConfiguracion, {marginBottom: 0}]}>
+            <View style={[style.containerDatosConfiguracion, { marginBottom: 0 }]}>
                 <Text style={[style.infoConfiguracion, style.textoGris]}>Información de la escuela</Text>
                 <Text style={[style.infoConfiguracionText, style.textoGris]}>Nombre: <Text style={style.infoConfiguracionTextData}>{institutoNombre}</Text></Text>
                 <Text style={[style.infoConfiguracionText, style.textoGris]}>Correo: <Text style={style.infoConfiguracionTextData}>{institutoCorreo}</Text></Text>
                 <Text style={[style.infoConfiguracionText, style.textoGris]}>Descripcion: <Text style={style.infoConfiguracionTextData}>{institutoDescripcion}</Text></Text>
             </View>
-            <TouchableOpacity 
-                style={[style.containerDatosConfiguracion, {paddingBottom: 0}]}
+            <TouchableOpacity
+                style={[style.containerDatosConfiguracion, { paddingBottom: 0 }]}
                 onPress={handleLogout}
             >
-                <Text style={[style.infoConfiguracion, style.cerrarSesion, {top: -10}]}>Cerrar Sesion</Text>
+                <Text style={[style.infoConfiguracion, style.cerrarSesion, { top: -10 }]}>Cerrar Sesion</Text>
             </TouchableOpacity>
         </SafeAreaView>
     );

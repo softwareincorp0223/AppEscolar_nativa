@@ -1,3 +1,4 @@
+//camara
 import React, { useEffect, useState } from 'react';
 import {
   View,
@@ -12,21 +13,62 @@ import {
 import { Camera } from 'react-native-camera-kit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
+import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
+import { initNotifications } from '../actions/Notifications';
 
-const App = () => {
+const LoginNativa = () => {
   const [scanSuccessful, setScanSuccessful] = useState(false);
   const [initializing, setInitializing] = useState(true);
   const navigation = useNavigation();
 
   useEffect(() => {
-    const requestPermissions = async () => {
-      if (Platform.OS === 'android') {
-        await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA);
-      }
-      verificarSesion();
-    };
+  initNotifications(); // Se ejecuta al iniciar la app
+}, []);
 
-    requestPermissions();
+const POST_NOTIFICATIONS = 'android.permission.POST_NOTIFICATIONS' as const;
+
+const requestNotificationPermission = async () => {
+  if (Platform.OS !== 'android') return RESULTS.UNAVAILABLE;
+
+  const sdk = typeof Platform.Version === 'number' ? Platform.Version : parseInt(String(Platform.Version), 10) || 0;
+  if (sdk < 33) return RESULTS.GRANTED; // Android <13 no necesita prompt
+
+  try {
+    let status = await check(POST_NOTIFICATIONS);
+
+    if (status === RESULTS.DENIED) {
+      status = await request(POST_NOTIFICATIONS);
+    }
+
+    return status;
+  } catch (err) {
+    console.error('Error solicitando permisos de notificación:', err);
+    return null;
+  }
+};
+
+function checkCameraPermission() {
+    check(PERMISSIONS.ANDROID.CAMERA)
+      .then((result) => {
+        if (result === RESULTS.DENIED) {
+          request(PERMISSIONS.ANDROID.CAMERA)
+            .then((newResult) => {
+              console.log('Permisos de cámara otorgados:', newResult);
+            })
+            .catch((error) => {
+              console.error('Error al solicitar permisos de cámara:', error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.error('Error al verificar los permisos de cámara:', error);
+      });
+  }
+
+  useEffect(() => {
+
+    checkCameraPermission();
+
   }, []);
 
   // Verificar sesión guardada
@@ -88,6 +130,7 @@ const App = () => {
         await AsyncStorage.setItem('@token_sesion', apiData.token_sesion);
 
         setScanSuccessful(true);
+        await requestNotificationPermission();
         navigation.navigate('DetallesAlumno');
       } else {
         Alert.alert("El código no existe o hay un error");
@@ -100,7 +143,7 @@ const App = () => {
   if (initializing) {
     return (
       <View style={styles.centeredContainer}>
-        <Text style={styles.largeText}></Text>
+        <Text style={styles.largeText}>Cargando...</Text>
       </View>
     );
   }
@@ -204,4 +247,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default LoginNativa;
